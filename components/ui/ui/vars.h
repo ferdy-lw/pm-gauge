@@ -39,6 +39,14 @@ extern int32_t get_var_fuel_level();
 extern void set_var_fuel_level(int32_t value);
 extern int32_t get_var_avg_cons();
 extern void set_var_avg_cons(int32_t value);
+extern bool get_var_obd_connected();
+extern void set_var_obd_connected(bool value);
+extern int32_t get_var_clutch();
+extern void set_var_clutch(int32_t value);
+extern int32_t get_var_slip();
+extern void set_var_slip(int32_t value);
+extern const char *get_var_gear();
+extern void set_var_gear(const char *value);
 
 
 #ifdef __cplusplus

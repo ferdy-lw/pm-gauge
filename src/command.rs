@@ -1,8 +1,8 @@
 use std::{
     ffi::CString,
     sync::{
-        atomic::{AtomicU16, AtomicU8, Ordering},
         Mutex,
+        atomic::{AtomicU8, AtomicU16, Ordering},
     },
 };
 
@@ -11,8 +11,8 @@ use circular_buffer::CircularBuffer;
 use log::info;
 
 use crate::ui::{
-    update_trans_chart, AVG_CONS, COOLANT_TEMP, ENGINE_TEMP, FUEL_LEVEL, OIL_PRESS, STATUS,
-    TRANS_TEMP, VOLTAGE,
+    self, AVG_CONS, CLUTCH, COOLANT_TEMP, ENGINE_TEMP, FUEL_LEVEL, OIL_PRESS, SLIP, STATUS,
+    TRANS_TEMP, VOLTAGE, update_trans_chart,
 };
 
 pub type Formula = Box<dyn FnMut(&[u8]) -> Result<f32> + Sync + Send + 'static>;
@@ -119,13 +119,13 @@ impl OBDCommand {
         }
     }
 
-    pub fn engine_speed() -> Self {
+    pub fn _engine_speed() -> Self {
         OBDCommand {
             name: "Engine Speed".to_owned(),
             _short_name: "RPM".to_owned(),
             service: Vec::from(b"2201D5"),
             set_ui: Box::new(|data| {
-                let value = rpm(data)?;
+                let value = _rpm(data)?;
 
                 RPM.store(value, Ordering::Relaxed);
 
@@ -176,7 +176,10 @@ impl OBDCommand {
                             // 18.3 mpg -> 183
                             AVG_CONS.store((cons_now * 10.0) as u16, Ordering::Release);
 
-                            let log_msg = format!("speed ({speed}), maf ({maf}), inst_cons_mpg ({inst_cons_mpg}), inst_mpg ({now_mpg}), oldest ({oldest_mpg:?}), cons_prev ({cons_prev}), cons_now ({cons_now}), len ({})", context.len());
+                            let log_msg = format!(
+                                "speed ({speed}), maf ({maf}), inst_cons_mpg ({inst_cons_mpg}), inst_mpg ({now_mpg}), oldest ({oldest_mpg:?}), cons_prev ({cons_prev}), cons_now ({cons_now}), len ({})",
+                                context.len()
+                            );
                             STATUS
                                 .write()
                                 .unwrap()
@@ -229,7 +232,9 @@ impl OBDCommand {
 
                             cons = 99.9_f32.min(cons);
 
-                            let log_msg = format!("miles now ({miles_now}) prev ({miles_prev}), fuel prev ({fuel_prev}) now ({fuel_now}), cons_now ({cons})");
+                            let log_msg = format!(
+                                "miles now ({miles_now}) prev ({miles_prev}), fuel prev ({fuel_prev}) now ({fuel_now}), cons_now ({cons})"
+                            );
                             STATUS
                                 .write()
                                 .unwrap()
@@ -296,7 +301,9 @@ impl OBDCommand {
 
                         cons = 99.9_f32.min(cons);
 
-                        let log_msg = format!("miles now ({miles_now}) prev ({miles_prev}), fuel used ({fuel_used}), cons_now ({cons})");
+                        let log_msg = format!(
+                            "miles now ({miles_now}) prev ({miles_prev}), fuel used ({fuel_used}), cons_now ({cons})"
+                        );
                         STATUS
                             .write()
                             .unwrap()
@@ -371,6 +378,43 @@ impl OBDCommand {
         }
     }
 
+    pub fn rpm_tc_slip() -> Self {
+        OBDCommand {
+            name: "Slip".to_owned(),
+            _short_name: "TCS".to_owned(),
+            service: Vec::from(b"2162"),
+            set_ui: Box::new(move |data| {
+                let iss = iss(data)?;
+                let oss = oss(data)?;
+
+                SLIP.store(iss as i16 - oss as i16, Ordering::Relaxed);
+
+                let value = iss; // Should be close enough to engine speed
+
+                RPM.store(value, Ordering::Relaxed);
+
+                Ok(value as f32)
+            }),
+        }
+    }
+
+    pub fn gear_clutches() -> Self {
+        OBDCommand {
+            name: "Gear & Clutches".to_owned(),
+            _short_name: "GER".to_owned(),
+            service: Vec::from(b"2165"),
+            set_ui: Box::new(move |data| {
+                ui::set_gear(gear_actual(data)?);
+
+                let clutches = *data.get(9).unwrap_or(&0);
+
+                CLUTCH.store(clutches, Ordering::Relaxed);
+
+                Ok(clutches as f32)
+            }),
+        }
+    }
+
     pub fn voltage() -> Self {
         OBDCommand {
             name: "Voltage".to_owned(),
@@ -440,7 +484,7 @@ fn two_digits(v: f32) -> f32 {
 }
 
 /// RPM
-fn rpm(data: &[u8]) -> Result<u16> {
+fn _rpm(data: &[u8]) -> Result<u16> {
     let a = *data.first().unwrap_or(&0) as f32;
     let b = *data.get(1).unwrap_or(&0) as f32;
 
@@ -575,6 +619,27 @@ fn oil_pressure(data: &[u8]) -> Result<u8> {
     let ans = a * 4.0; // * 29/50 for psi  (*6.89476 back to kpa - or a*4; kpa to psi *.145038)
 
     Ok(kpa_to_psi(ans) as u8)
+}
+
+fn iss(data: &[u8]) -> Result<u16> {
+    let a = *data.first().unwrap_or(&0) as f32;
+    let b = *data.get(1).unwrap_or(&0) as f32;
+
+    Ok(combine(a, b) as u16)
+}
+
+fn oss(data: &[u8]) -> Result<u16> {
+    let c = *data.get(2).unwrap_or(&0) as f32;
+    let d = *data.get(3).unwrap_or(&0) as f32;
+
+    Ok(combine(c, d) as u16)
+}
+
+fn gear_actual(data: &[u8]) -> Result<u16> {
+    let f = *data.get(5).unwrap_or(&0) as f32;
+    let g = *data.get(6).unwrap_or(&0) as f32;
+
+    Ok(combine(f, g) as u16)
 }
 
 //

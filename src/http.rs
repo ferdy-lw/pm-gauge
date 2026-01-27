@@ -33,7 +33,9 @@ pub fn service_loop() -> Result<()> {
                 (OBDCommand::oil(), 1),
                 (OBDCommand::atf(), 1),
                 (OBDCommand::oil_pressure(), 1),
-                (OBDCommand::engine_speed(), 1),
+                (OBDCommand::gear_clutches(), 1),
+                (OBDCommand::rpm_tc_slip(), 1),
+                // (OBDCommand::engine_speed(), 1),  // Calculated in rpm_tc_slp
                 (OBDCommand::ipw_1(), 1),
                 // (OBDCommand::maf(), 1),
                 // (OBDCommand::vehicle_speed(), 5),

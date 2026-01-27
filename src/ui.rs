@@ -3,7 +3,7 @@ use std::{
     ptr,
     sync::{
         LazyLock, RwLock,
-        atomic::{AtomicU8, AtomicU16, Ordering},
+        atomic::{AtomicBool, AtomicI16, AtomicU8, AtomicU16, Ordering},
     },
 };
 
@@ -30,12 +30,17 @@ pub static OIL_PRESS: AtomicU8 = AtomicU8::new(0);
 pub static VOLTAGE: RwLock<f32> = RwLock::new(0f32);
 pub static FUEL_LEVEL: AtomicU16 = AtomicU16::new(0);
 pub static AVG_CONS: AtomicU16 = AtomicU16::new(0);
+pub static SLIP: AtomicI16 = AtomicI16::new(0);
+pub static CLUTCH: AtomicU8 = AtomicU8::new(0);
+pub static GEAR: RwLock<&CStr> = RwLock::new(c"");
+pub static OBD_CONNECTED: AtomicBool = AtomicBool::new(false);
 
 static INFO: RwLock<&CStr> = RwLock::new(c"");
 pub static STATUS: RwLock<Option<CString>> = RwLock::new(None);
 
 static EMPTY_STR: LazyLock<CString> = LazyLock::new(|| CString::new("").unwrap());
 
+#[derive(PartialEq)]
 pub enum Info {
     None,
     NoPeer,
@@ -44,6 +49,9 @@ pub enum Info {
 
 impl Info {
     pub fn set_info(info: &Info) {
+        let connected = info == &Info::None;
+        OBD_CONNECTED.store(connected, Ordering::Relaxed);
+
         let info = match info {
             Info::None => c"",
             Info::NoPeer => c"NO OBD",
@@ -164,6 +172,78 @@ pub extern "C" fn get_var_avg_cons() -> i32 {
 
 #[unsafe(no_mangle)]
 pub extern "C" fn set_var_avg_cons(_value: i32) {
+    // NOOP
+}
+
+// SLIP
+// ----
+#[unsafe(no_mangle)]
+pub extern "C" fn get_var_slip() -> i32 {
+    SLIP.load(Ordering::Relaxed) as i32
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn set_var_slip(_value: i32) {
+    // NOOP
+}
+
+// CLUTCH
+// ------
+#[unsafe(no_mangle)]
+pub extern "C" fn get_var_clutch() -> i32 {
+    CLUTCH.load(Ordering::Relaxed) as i32
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn set_var_clutch(_value: i32) {
+    // NOOP
+}
+
+// GEAR
+// ----
+#[unsafe(no_mangle)]
+pub extern "C" fn get_var_gear() -> *const ::core::ffi::c_char {
+    (*GEAR.read().unwrap()).as_ptr()
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn set_var_gear(_value: *const ::core::ffi::c_char) {
+    // NOOP
+}
+
+pub fn set_gear(gear: u16) {
+    let gear = if gear == 1 {
+        c"N"
+    } else if gear == 2 {
+        c"R"
+    } else if gear == 4 {
+        c"1"
+    } else if gear == 8 {
+        c"2"
+    } else if gear == 16 {
+        c"3"
+    } else if gear == 32 {
+        c"4"
+    } else if gear == 128 {
+        c"5"
+    } else if gear == 256 {
+        c"6"
+    } else {
+        c""
+    };
+
+    *GEAR.write().unwrap() = gear;
+}
+
+// OBD Connect Btn
+//-----------------
+#[unsafe(no_mangle)]
+pub extern "C" fn get_var_obd_connected() -> bool {
+    OBD_CONNECTED.load(Ordering::Relaxed)
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn set_var_obd_connected(_value: bool) {
     // NOOP
 }
 
