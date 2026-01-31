@@ -59,18 +59,10 @@ void remove_style_fuel_ico(lv_obj_t *obj);
 
 // Style: clutch
 lv_style_t *get_style_clutch_MAIN_DEFAULT();
+lv_style_t *get_style_clutch_INDICATOR_DEFAULT();
+lv_style_t *get_style_clutch_KNOB_DEFAULT();
 void add_style_clutch(lv_obj_t *obj);
 void remove_style_clutch(lv_obj_t *obj);
-
-// Style: clutch_on
-lv_style_t *get_style_clutch_on_MAIN_DEFAULT();
-void add_style_clutch_on(lv_obj_t *obj);
-void remove_style_clutch_on(lv_obj_t *obj);
-
-// Style: clutch_off
-lv_style_t *get_style_clutch_off_MAIN_DEFAULT();
-void add_style_clutch_off(lv_obj_t *obj);
-void remove_style_clutch_off(lv_obj_t *obj);
 
 
 

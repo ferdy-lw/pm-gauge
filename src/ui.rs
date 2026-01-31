@@ -23,6 +23,8 @@ use esp_idf_svc::sys::lcd_bindings::{
     lv_style_prop_t_LV_STYLE_PAD_TOP, lvgl_port_lock, lvgl_port_unlock, objects,
 };
 
+use crate::espnow::ObdNow;
+
 pub static COOLANT_TEMP: RwLock<f32> = RwLock::new(0f32);
 pub static ENGINE_TEMP: RwLock<f32> = RwLock::new(0f32);
 pub static TRANS_TEMP: RwLock<f32> = RwLock::new(0f32);
@@ -244,7 +246,8 @@ pub extern "C" fn get_var_obd_connected() -> bool {
 
 #[unsafe(no_mangle)]
 pub extern "C" fn set_var_obd_connected(_value: bool) {
-    // NOOP
+    // This is just a click event on the button
+    ObdNow::send_connect(!get_var_obd_connected());
 }
 
 /// Create the transmission chart. This MUST be called while holding the lv lock

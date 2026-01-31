@@ -22,7 +22,7 @@ void init_style_tab_panel_MAIN_DEFAULT(lv_style_t *style) {
 lv_style_t *get_style_tab_panel_MAIN_DEFAULT() {
     static lv_style_t *style;
     if (!style) {
-        style = lv_mem_alloc(sizeof(lv_style_t));
+        style = (lv_style_t *)lv_mem_alloc(sizeof(lv_style_t));
         lv_style_init(style);
         init_style_tab_panel_MAIN_DEFAULT(style);
     }
@@ -55,7 +55,7 @@ void init_style_tab_button_MAIN_DEFAULT(lv_style_t *style) {
 lv_style_t *get_style_tab_button_MAIN_DEFAULT() {
     static lv_style_t *style;
     if (!style) {
-        style = lv_mem_alloc(sizeof(lv_style_t));
+        style = (lv_style_t *)lv_mem_alloc(sizeof(lv_style_t));
         lv_style_init(style);
         init_style_tab_button_MAIN_DEFAULT(style);
     }
@@ -91,7 +91,7 @@ void init_style_tab_active_MAIN_DEFAULT(lv_style_t *style) {
 lv_style_t *get_style_tab_active_MAIN_DEFAULT() {
     static lv_style_t *style;
     if (!style) {
-        style = lv_mem_alloc(sizeof(lv_style_t));
+        style = (lv_style_t *)lv_mem_alloc(sizeof(lv_style_t));
         lv_style_init(style);
         init_style_tab_active_MAIN_DEFAULT(style);
     }
@@ -119,7 +119,7 @@ void init_style_hot_temp_MAIN_DEFAULT(lv_style_t *style) {
 lv_style_t *get_style_hot_temp_MAIN_DEFAULT() {
     static lv_style_t *style;
     if (!style) {
-        style = lv_mem_alloc(sizeof(lv_style_t));
+        style = (lv_style_t *)lv_mem_alloc(sizeof(lv_style_t));
         lv_style_init(style);
         init_style_hot_temp_MAIN_DEFAULT(style);
     }
@@ -148,7 +148,7 @@ void init_style_gauge_num_MAIN_DEFAULT(lv_style_t *style) {
 lv_style_t *get_style_gauge_num_MAIN_DEFAULT() {
     static lv_style_t *style;
     if (!style) {
-        style = lv_mem_alloc(sizeof(lv_style_t));
+        style = (lv_style_t *)lv_mem_alloc(sizeof(lv_style_t));
         lv_style_init(style);
         init_style_gauge_num_MAIN_DEFAULT(style);
     }
@@ -176,7 +176,7 @@ void init_style_low_fuel_MAIN_DEFAULT(lv_style_t *style) {
 lv_style_t *get_style_low_fuel_MAIN_DEFAULT() {
     static lv_style_t *style;
     if (!style) {
-        style = lv_mem_alloc(sizeof(lv_style_t));
+        style = (lv_style_t *)lv_mem_alloc(sizeof(lv_style_t));
         lv_style_init(style);
         init_style_low_fuel_MAIN_DEFAULT(style);
     }
@@ -204,7 +204,7 @@ void init_style_low_fuel_meter_MAIN_DEFAULT(lv_style_t *style) {
 lv_style_t *get_style_low_fuel_meter_MAIN_DEFAULT() {
     static lv_style_t *style;
     if (!style) {
-        style = lv_mem_alloc(sizeof(lv_style_t));
+        style = (lv_style_t *)lv_mem_alloc(sizeof(lv_style_t));
         lv_style_init(style);
         init_style_low_fuel_meter_MAIN_DEFAULT(style);
     }
@@ -232,7 +232,7 @@ void init_style_meter_num_TICKS_DEFAULT(lv_style_t *style) {
 lv_style_t *get_style_meter_num_TICKS_DEFAULT() {
     static lv_style_t *style;
     if (!style) {
-        style = lv_mem_alloc(sizeof(lv_style_t));
+        style = (lv_style_t *)lv_mem_alloc(sizeof(lv_style_t));
         lv_style_init(style);
         init_style_meter_num_TICKS_DEFAULT(style);
     }
@@ -261,7 +261,7 @@ void init_style_low_fuel_ico_MAIN_DEFAULT(lv_style_t *style) {
 lv_style_t *get_style_low_fuel_ico_MAIN_DEFAULT() {
     static lv_style_t *style;
     if (!style) {
-        style = lv_mem_alloc(sizeof(lv_style_t));
+        style = (lv_style_t *)lv_mem_alloc(sizeof(lv_style_t));
         lv_style_init(style);
         init_style_low_fuel_ico_MAIN_DEFAULT(style);
     }
@@ -290,7 +290,7 @@ void init_style_fuel_ico_MAIN_DEFAULT(lv_style_t *style) {
 lv_style_t *get_style_fuel_ico_MAIN_DEFAULT() {
     static lv_style_t *style;
     if (!style) {
-        style = lv_mem_alloc(sizeof(lv_style_t));
+        style = (lv_style_t *)lv_mem_alloc(sizeof(lv_style_t));
         lv_style_init(style);
         init_style_fuel_ico_MAIN_DEFAULT(style);
     }
@@ -312,17 +312,45 @@ void remove_style_fuel_ico(lv_obj_t *obj) {
 //
 
 void init_style_clutch_MAIN_DEFAULT(lv_style_t *style) {
-    lv_style_set_border_color(style, lv_color_hex(0xffe0e0e0));
-    lv_style_set_border_width(style, 1);
-    lv_style_set_text_font(style, &lv_font_montserrat_22);
+    lv_style_set_arc_rounded(style, false);
+    lv_style_set_arc_width(style, 5);
 };
 
 lv_style_t *get_style_clutch_MAIN_DEFAULT() {
     static lv_style_t *style;
     if (!style) {
-        style = lv_mem_alloc(sizeof(lv_style_t));
+        style = (lv_style_t *)lv_mem_alloc(sizeof(lv_style_t));
         lv_style_init(style);
         init_style_clutch_MAIN_DEFAULT(style);
+    }
+    return style;
+};
+
+void init_style_clutch_INDICATOR_DEFAULT(lv_style_t *style) {
+    lv_style_set_arc_width(style, 5);
+    lv_style_set_arc_rounded(style, false);
+};
+
+lv_style_t *get_style_clutch_INDICATOR_DEFAULT() {
+    static lv_style_t *style;
+    if (!style) {
+        style = (lv_style_t *)lv_mem_alloc(sizeof(lv_style_t));
+        lv_style_init(style);
+        init_style_clutch_INDICATOR_DEFAULT(style);
+    }
+    return style;
+};
+
+void init_style_clutch_KNOB_DEFAULT(lv_style_t *style) {
+    lv_style_set_opa(style, 0);
+};
+
+lv_style_t *get_style_clutch_KNOB_DEFAULT() {
+    static lv_style_t *style;
+    if (!style) {
+        style = (lv_style_t *)lv_mem_alloc(sizeof(lv_style_t));
+        lv_style_init(style);
+        init_style_clutch_KNOB_DEFAULT(style);
     }
     return style;
 };
@@ -330,73 +358,15 @@ lv_style_t *get_style_clutch_MAIN_DEFAULT() {
 void add_style_clutch(lv_obj_t *obj) {
     (void)obj;
     lv_obj_add_style(obj, get_style_clutch_MAIN_DEFAULT(), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_add_style(obj, get_style_clutch_INDICATOR_DEFAULT(), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_add_style(obj, get_style_clutch_KNOB_DEFAULT(), LV_PART_KNOB | LV_STATE_DEFAULT);
 };
 
 void remove_style_clutch(lv_obj_t *obj) {
     (void)obj;
     lv_obj_remove_style(obj, get_style_clutch_MAIN_DEFAULT(), LV_PART_MAIN | LV_STATE_DEFAULT);
-};
-
-//
-// Style: clutch_on
-//
-
-void init_style_clutch_on_MAIN_DEFAULT(lv_style_t *style) {
-    lv_style_set_bg_opa(style, 255);
-    lv_style_set_bg_color(style, lv_color_hex(0xff4fb779));
-    lv_style_set_border_width(style, 3);
-    lv_style_set_border_color(style, lv_color_hex(0xff000000));
-    lv_style_set_text_color(style, lv_color_hex(0xffffffff));
-    lv_style_set_text_opa(style, 255);
-};
-
-lv_style_t *get_style_clutch_on_MAIN_DEFAULT() {
-    static lv_style_t *style;
-    if (!style) {
-        style = lv_mem_alloc(sizeof(lv_style_t));
-        lv_style_init(style);
-        init_style_clutch_on_MAIN_DEFAULT(style);
-    }
-    return style;
-};
-
-void add_style_clutch_on(lv_obj_t *obj) {
-    (void)obj;
-    lv_obj_add_style(obj, get_style_clutch_on_MAIN_DEFAULT(), LV_PART_MAIN | LV_STATE_DEFAULT);
-};
-
-void remove_style_clutch_on(lv_obj_t *obj) {
-    (void)obj;
-    lv_obj_remove_style(obj, get_style_clutch_on_MAIN_DEFAULT(), LV_PART_MAIN | LV_STATE_DEFAULT);
-};
-
-//
-// Style: clutch_off
-//
-
-void init_style_clutch_off_MAIN_DEFAULT(lv_style_t *style) {
-    lv_style_set_bg_opa(style, 0);
-    lv_style_set_bg_color(style, lv_color_hex(0xffffffff));
-};
-
-lv_style_t *get_style_clutch_off_MAIN_DEFAULT() {
-    static lv_style_t *style;
-    if (!style) {
-        style = lv_mem_alloc(sizeof(lv_style_t));
-        lv_style_init(style);
-        init_style_clutch_off_MAIN_DEFAULT(style);
-    }
-    return style;
-};
-
-void add_style_clutch_off(lv_obj_t *obj) {
-    (void)obj;
-    lv_obj_add_style(obj, get_style_clutch_off_MAIN_DEFAULT(), LV_PART_MAIN | LV_STATE_DEFAULT);
-};
-
-void remove_style_clutch_off(lv_obj_t *obj) {
-    (void)obj;
-    lv_obj_remove_style(obj, get_style_clutch_off_MAIN_DEFAULT(), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_remove_style(obj, get_style_clutch_INDICATOR_DEFAULT(), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+    lv_obj_remove_style(obj, get_style_clutch_KNOB_DEFAULT(), LV_PART_KNOB | LV_STATE_DEFAULT);
 };
 
 //
@@ -417,8 +387,6 @@ void add_style(lv_obj_t *obj, int32_t styleIndex) {
         add_style_low_fuel_ico,
         add_style_fuel_ico,
         add_style_clutch,
-        add_style_clutch_on,
-        add_style_clutch_off,
     };
     add_style_funcs[styleIndex](obj);
 }
@@ -437,8 +405,6 @@ void remove_style(lv_obj_t *obj, int32_t styleIndex) {
         remove_style_low_fuel_ico,
         remove_style_fuel_ico,
         remove_style_clutch,
-        remove_style_clutch_on,
-        remove_style_clutch_off,
     };
     remove_style_funcs[styleIndex](obj);
 }

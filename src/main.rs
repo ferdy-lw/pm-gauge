@@ -23,7 +23,7 @@ mod http;
 mod ui;
 use ui::create_trans_chart;
 
-use crate::ui::update_trans_chart;
+use crate::{espnow::ObdNow, ui::update_trans_chart};
 
 type MacAddr = [u8; 6];
 const SSID: &str = "OBD-ESPWIFI";
@@ -76,12 +76,15 @@ fn main() -> anyhow::Result<()> {
     //--------
     let espnow = EspNow::take()?;
 
-    let (tx_now, rx_now) = espnow::create_channel();
+    ObdNow::start(espnow, rx_disc)?;
 
-    espnow.register_recv_cb(move |info, data| espnow::recv_cb(&tx_now, info, data))?;
+    // let (tx_now, rx_now) = espnow::create_channel();
 
-    info!("ESPNOW starting");
-    thread::spawn(move || espnow::elm327_client_address(rx_now, rx_disc));
+    // espnow.register_recv_cb(move |info, data| espnow::recv_cb(&tx_now, info, data))?;
+    // // espnow.
+
+    // info!("ESPNOW starting");
+    // thread::spawn(move || espnow::elm327_client_address(rx_now, rx_disc));
 
     //------------------
     // HTTP Error log

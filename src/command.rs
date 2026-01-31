@@ -406,7 +406,7 @@ impl OBDCommand {
             set_ui: Box::new(move |data| {
                 ui::set_gear(gear_actual(data)?);
 
-                let clutches = *data.get(9).unwrap_or(&0);
+                let clutches = *data.get(9).unwrap_or(&0); // J
 
                 CLUTCH.store(clutches, Ordering::Relaxed);
 
