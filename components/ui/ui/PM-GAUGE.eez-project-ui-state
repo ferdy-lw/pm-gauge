@@ -1,9 +1,10 @@
 {
   "navigation": {
     "selectedUserPageObject": "[PM-GAUGE.eez-project]:/userPages/0",
+    "selectedUserWidgetObject": "[PM-GAUGE.eez-project]:/userWidgets/0",
     "selectedActionObject": "[PM-GAUGE.eez-project]:/actions/0",
-    "selectedGlobalVariableObject": "[PM-GAUGE.eez-project]:/variables/globalVariables/7",
-    "selectedStyleObject": "[PM-GAUGE.eez-project]:/lvglStyles/styles/0",
+    "selectedGlobalVariableObject": "[PM-GAUGE.eez-project]:/variables/globalVariables/3",
+    "selectedStyleObject": "[PM-GAUGE.eez-project]:/lvglStyles/styles/10",
     "selectedBitmapObject": "[PM-GAUGE.eez-project]:/bitmaps/1",
     "subnavigationSelectedItems": {
       "variables-tab/sub-navigation/selected-item": "Global"
@@ -27,7 +28,7 @@
           },
           {
             "type": "border",
-            "selected": 1,
+            "selected": 0,
             "size": 180.5,
             "location": "right",
             "children": [
@@ -136,6 +137,7 @@
                   "type": "tabset",
                   "id": "#7239e6c0-fd63-4347-831c-d4e811d0d6cc",
                   "weight": 0.44705882352941173,
+                  "selected": 1,
                   "enableClose": false,
                   "children": [
                     {
@@ -167,7 +169,7 @@
                 {
                   "type": "tabset",
                   "id": "#9e864068-623b-4ce4-9fd7-ced0f78c9764",
-                  "weight": 1.894117647058823,
+                  "weight": 1.221314451706608,
                   "enableClose": false,
                   "children": [
                     {
@@ -183,7 +185,7 @@
                 {
                   "type": "tabset",
                   "id": "#416a8db9-6e59-471d-a939-7880b70d35ec",
-                  "weight": 0.6588235294117647,
+                  "weight": 1.331626724763979,
                   "enableClose": false,
                   "children": [
                     {
@@ -202,10 +204,20 @@
               "type": "tabset",
               "id": "EDITORS",
               "weight": 67.00970873786407,
-              "selected": 1,
               "enableDeleteWhenEmpty": false,
               "enableClose": false,
               "children": [
+                {
+                  "type": "tab",
+                  "id": "#24ea3951-8251-4c5d-aa5c-4153fbf511c6",
+                  "name": "slip_clutches",
+                  "component": "editor",
+                  "config": {
+                    "objectPath": "[PM-GAUGE.eez-project]:/userWidgets/0",
+                    "permanent": true
+                  },
+                  "icon": "svg:user_widget"
+                },
                 {
                   "type": "tab",
                   "id": "#141d730d-191d-4355-b46c-8be04738354e",
@@ -1040,19 +1052,14 @@
           "3": {},
           "4": {},
           "6": {
-            "0": {
-              "1": {}
-            },
-            "1": {
-              "1": {}
-            }
+            "$selected": true
           }
         }
       },
       "transform": {
         "translate": {
           "x": -512,
-          "y": -420
+          "y": -185.02307107107976
         },
         "scale": 1
       },
@@ -1064,9 +1071,7 @@
       }
     },
     "[PM-GAUGE.eez-project]:/lvglStyles/styles[tree-state]": {
-      "0": {
-        "$selected": true
-      },
+      "0": {},
       "1": {},
       "2": {},
       "3": {},
@@ -1075,7 +1080,8 @@
       "6": {},
       "7": {},
       "8": {},
-      "9": {}
+      "9": {},
+      "10": {}
     },
     "[PM-GAUGE.eez-project]:/userPages/1[flow-state]": {
       "selection": {
@@ -1124,6 +1130,29 @@
           "y": 23.69487152099604
         },
         "scale": 1
+      }
+    },
+    "[PM-GAUGE.eez-project]:/userWidgets/0[flow-state]": {
+      "selection": {
+        "0": {
+          "0": {
+            "$selected": true
+          },
+          "1": {}
+        }
+      },
+      "transform": {
+        "translate": {
+          "x": -90,
+          "y": -90
+        },
+        "scale": 1
+      },
+      "timeline": {
+        "isEditorActive": false,
+        "position": 0,
+        "secondToPx": 200,
+        "scrollLeft": 0
       }
     }
   },

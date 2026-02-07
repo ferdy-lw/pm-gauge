@@ -5051,12 +5051,12 @@
             "MAIN": {
               "DEFAULT": {
                 "arc_rounded": false,
-                "arc_width": 5
+                "arc_width": 8
               }
             },
             "INDICATOR": {
               "DEFAULT": {
-                "arc_width": 5,
+                "arc_width": 8,
                 "arc_rounded": false
               }
             },

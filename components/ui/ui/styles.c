@@ -313,7 +313,7 @@ void remove_style_fuel_ico(lv_obj_t *obj) {
 
 void init_style_clutch_MAIN_DEFAULT(lv_style_t *style) {
     lv_style_set_arc_rounded(style, false);
-    lv_style_set_arc_width(style, 5);
+    lv_style_set_arc_width(style, 8);
 };
 
 lv_style_t *get_style_clutch_MAIN_DEFAULT() {
@@ -327,7 +327,7 @@ lv_style_t *get_style_clutch_MAIN_DEFAULT() {
 };
 
 void init_style_clutch_INDICATOR_DEFAULT(lv_style_t *style) {
-    lv_style_set_arc_width(style, 5);
+    lv_style_set_arc_width(style, 8);
     lv_style_set_arc_rounded(style, false);
 };
 
