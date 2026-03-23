@@ -5,7 +5,7 @@ use std::{sync::mpsc, thread, time::Duration};
 use esp_idf_svc::{
     espnow::EspNow,
     eventloop::EspSystemEventLoop,
-    hal::prelude::Peripherals,
+    hal::peripherals::Peripherals,
     netif::IpEvent,
     nvs::EspDefaultNvsPartition,
     sys::lcd_bindings::{
