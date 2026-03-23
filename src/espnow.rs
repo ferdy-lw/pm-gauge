@@ -71,7 +71,10 @@ impl ObdNow {
         espnow.register_recv_cb(move |info, data| ObdNow::recv_cb(&tx_now, info, data))?;
 
         info!("ESPNOW starting");
-        thread::spawn(move || ObdNow::elm327_client_address(rx_now, rx_disc));
+        let _ = thread::Builder::new()
+            .name("esp_now".to_string())
+            .stack_size(4096)
+            .spawn(move || ObdNow::elm327_client_address(rx_now, rx_disc));
 
         let obdnow = Self { espnow };
 
